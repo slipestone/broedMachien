@@ -1,0 +1,22 @@
+{
+  "name": "broedmachien",
+  "version": "1.0.0",
+  "description": "RPI code to control the broedmachien",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slipestone/broedmachien.git"
+  },
+  "author": "Marcel Franke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slipestone/broedmachien/issues"
+  },
+  "homepage": "https://github.com/slipestone/broedmachien#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
