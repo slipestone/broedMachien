@@ -16,7 +16,20 @@ $(document).ready( () =>{
 
     });
 
+    $.ajax({
+        url: "/humidity",
+        method: "GET",
+        headers: {
+            "accept":"application/json;odata=verbose",
+        },
+        success: function(data){            
+            $('#humidity').text(data);
+        },
+        error: function (err){
+            alert (err);
+        }
 
-    $('#humidity').text("boing");
+    });
+
     
 })
