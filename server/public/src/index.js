@@ -8,7 +8,7 @@ $(document).ready( () =>{
             "accept":"application/json;odata=verbose",
         },
         success: function(data){            
-            $('#temperature').text(data.value);
+            $('#temperature-display').text(data.value);
         },
         error: function (err){
             alert (err);
@@ -23,7 +23,7 @@ $(document).ready( () =>{
             "accept":"application/json;odata=verbose",
         },
         success: function(data){            
-            $('#humidity').text(data.value);
+            $('#humidity-display').text(data.value);
         },
         error: function (err){
             alert (err);
