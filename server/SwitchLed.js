@@ -4,6 +4,13 @@ var LED = new Gpio(2, 'out'); //use GPIO pin 4, and specify that it is
 var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms 
 
  
+function switchRelais(value) {
+
+    LED.writeSync(value); //set pin state to 1 (turn LED on) 
+}
+
+
+
 
 function blinkLED() { //function to start blinking 
 
