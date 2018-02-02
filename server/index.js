@@ -3,8 +3,9 @@
 const express = require('express');
 const path = require('path')
 const app = express();
-var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO 
-var relais = new Gpio(2, 'out'); //use GPIO pin 4, and specify that it is output 
+const relais = require('./relais');
+//var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO 
+// 
  
 //const sensor = require('node-dht-sensor');
 //const getSensorReadings = require('./get-sensor-readings')
@@ -40,23 +41,26 @@ httpServer.start(2999);*/
 
 //CONTROL LOGIC
 
-setInterval(controlTemperature,5000)
+setInterval(controlTemperature,1000);
+
+relais.init(5)
+setInterval(controlTemperature,1000);
 
 
 function controlTemperature(){
     var temp = getCachedSensorReadings.getTemperature()
-    if (temp > 22) {
-        console.log(">22 relais is off ("+ temp+")" )
-        if (relais.readSync() === 1) { //if relais is On
-            relais.writeSync(0);           //then swithc it off
+    if (temp > 38) {
+        console.log(">38 relais is off ("+ temp+")" )
+        if (relais.getStatus() === 1) { //if relais is On
+            relais.setStatus(0);           //then swithc it off
         }
       
 
     }
-    else if (temp < 21){
-        console.log("< 21 relais is on ("+ temp+")" ) 
-        if (relais.readSync() === 0) { //if relais is On
-            relais.writeSync(1);           //then swithc it off
+    else if (temp <= 37){
+        console.log("<= 37 relais is on ("+ temp+")" ) 
+        if (relais.getStatus() === 0) { //if relais is On
+            relais.getStatus(1);           //then swithc it off
         }
       
     }    
