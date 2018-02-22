@@ -67,7 +67,7 @@ setInterval(controlTemperature,1000);
 function controlTemperature(){
 
     var temp = getCachedSensorReadings.getTemperature()
-    if (temp != null && temp > 38) {
+    if (temp != null && temp >= 37.9) {
         console.log(" temp: "+ temp+")" )
         if (relais.getStatus() === 1) { //if relais is On
             relais.setStatus(0);           //then swithc it off
@@ -75,7 +75,7 @@ function controlTemperature(){
       
 
     }
-    else if (temp <= 37){
+    else if (temp <= 37.4){
         console.log("<= 37 relais is on ("+ temp+")" ) 
         if (relais.getStatus() === 0) { //if relais is On
             relais.setStatus(1);           //then swithc it off
