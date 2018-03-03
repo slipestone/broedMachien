@@ -4,10 +4,12 @@ const express = require('express');
 const path = require('path')
 const app = express();
 const relais = require('./relais');
+const fan = require('./fan.js');
 
 const getCachedSensorReadings = require('./get-cached-sensor-readings');
 
 relais.init(5); //init relais on port 5
+relais.init(17); //init relais on port 5
 
 app.use('/public', express.static(path.join(__dirname,
     'public')))
@@ -61,26 +63,40 @@ httpServer.start(2999);*/
 
 //setInterval(controlTemperature,1000);
 
-setInterval(controlTemperature,1000);
+setInterval(controlEnvironment,1000);
 
 
-function controlTemperature(){
+function controlEnvironment(){
 
     var temp = getCachedSensorReadings.getTemperature()
+    var hum = getCachedSensorReadings.getHumidity()
+    //CONTROL TEMP
     if (temp != null && temp >= 37.9) {
-        console.log(" temp: "+ temp+")" )
+        console.log(" temp > 37.9 (bulb off) "+ temp )
         if (relais.getStatus() === 1) { //if relais is On
             relais.setStatus(0);           //then swithc it off
         }
-      
-
     }
-    else if (temp <= 37.4){
-        console.log("<= 37 relais is on ("+ temp+")" ) 
-        if (relais.getStatus() === 0) { //if relais is On
-            relais.setStatus(1);           //then swithc it off
+    else if (temp != null && temp <= 37.4){
+        console.log(" temp < 37.4 (bulb on) "+ temp )
+        if (relais.getStatus() === 0) { //if relais is Off
+            relais.setStatus(1);           //then swithc it on
+        }      
+    }
+    
+    //CONTROL HUM
+    if (hum != null && hum >= 49) {
+        console.log(" hum > 49 (fan On) "+ hum )
+        if (fan.getStatus() === 1) { //if relais is On
+            fan.setStatus(0);           //then swithc it off
+        }
+    }
+    else if (hum != null && hum <= 47){
+        console.log(" hum <47 (fan off) "+ hum )
+        if (fan.getStatus() === 0) { //if relais is On
+            fan.setStatus(1);           //then swithc it off
         }
       
-    }    
+    }
         
 }

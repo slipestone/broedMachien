@@ -10,7 +10,7 @@ const Fan = {
     getStatus : _getStatus,
     setStatus : _setStatus
 }
-module.exports = Relais
+module.exports = Fan
 
 
 
