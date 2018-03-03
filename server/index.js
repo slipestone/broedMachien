@@ -9,7 +9,7 @@ const fan = require('./fan.js');
 const getCachedSensorReadings = require('./get-cached-sensor-readings');
 
 relais.init(5); //init relais on port 5
-relais.init(17); //init relais on port 5
+fan.init(20); //init relais on port 5
 
 app.use('/public', express.static(path.join(__dirname,
     'public')))
@@ -87,14 +87,14 @@ function controlEnvironment(){
     //CONTROL HUM
     if (hum != null && hum >= 49) {
         console.log(" hum > 49 (fan On) "+ hum )
-        if (fan.getStatus() === 1) { //if relais is On
+        if (fan.getStatus() === 1) { //if fan is On
             fan.setStatus(0);           //then swithc it off
         }
     }
     else if (hum != null && hum <= 47){
         console.log(" hum <47 (fan off) "+ hum )
-        if (fan.getStatus() === 0) { //if relais is On
-            fan.setStatus(1);           //then swithc it off
+        if (fan.getStatus() === 0) { //if fan is On
+            fan.setStatus(1);           //then switch it off
         }
       
     }
