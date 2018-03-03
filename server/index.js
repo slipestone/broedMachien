@@ -35,18 +35,48 @@ app.get('/all', function (req, res) {
 });
 
 
-app.get('/relaisOn', function (req, res) {
+app.get('/relais', function (req, res) {    
+    res.json({
+        relais: relais.getStatus().toFixed(0)
+    })
+});
+
+
+app.get('/relais/1', function (req, res) {
     relais.setStatus(1); 
     res.json({
         relais: relais.getStatus().toFixed(0)
     })
 });
 
-app.get('/relaisOff', function (req, res) {
+app.get('/relais/0', function (req, res) {
     relais.setStatus(0); 
     res.json({
         relais: relais.getStatus().toFixed(0)
     })
+
+    app.get('/fan', function (req, res) {        
+        res.json({
+            fan: fan.getStatus().toFixed(0)
+        })
+    });
+    
+
+
+app.get('/fan/1', function (req, res) {
+    fan.setStatus(1); 
+    res.json({
+        fan: fan.getStatus().toFixed(0)
+    })
+});
+
+app.get('/fan/0', function (req, res) {
+    fan.setStatus(0); 
+    res.json({
+        fan: relais.getStatus().toFixed(0)
+    })
+
+
 });
 
 
