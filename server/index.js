@@ -119,14 +119,14 @@ function controlEnvironment(){
     }
     
     //CONTROL HUM
-    if (hum != null && hum >= 49) {
-        console.log(" hum > 49 (fan On) "+ hum )
+    if (hum != null && hum >= 54) {
+        console.log(" hum > 54 (fan On) "+ hum )
         if (fan.getStatus() === 0) { //if fan is On
             fan.setStatus(1);           //then swithc it off
         }
     }
-    else if (hum != null && hum <= 47){
-        console.log(" hum <47 (fan off) "+ hum )
+    else if (hum != null && hum <= 52){
+        console.log(" hum <52 (fan off) "+ hum )
         if (fan.getStatus() === 1) { //if fan is On
             fan.setStatus(0);           //then switch it off
         } 
