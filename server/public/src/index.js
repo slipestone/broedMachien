@@ -53,7 +53,7 @@ const humidityChartConfig = {
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: 30,
+          suggestedMin: 40,
           suggestedMax: 70
         }
       }]
@@ -114,9 +114,9 @@ data.value + '</strong>'
             const timeNow = now.getHours() + ':' + 
        now.getMinutes() + ':' + now.getSeconds()
             pushData(temperatureChartConfig.data.labels, 
-      timeNow, 50)
+      timeNow, 90)
             pushData(temperatureChartConfig.data.datasets[0]
-      .data, data.value, 50)
+      .data, data.value, 90)
             temperatureChart.update()
             ///CHART
 
@@ -141,9 +141,9 @@ data.value + '</strong>'
           const timeNow = now.getHours() + ':' + 
     now.getMinutes() + ':' + now.getSeconds()
           pushData(humidityChartConfig.data.labels, timeNow,
-     50)
+     90)
           pushData(humidityChartConfig.data.datasets[0].data,
-     data.value, 50)
+     data.value, 90)
           humidityChart.update()
             // CHART
         },
@@ -159,11 +159,11 @@ data.value + '</strong>'
     setInterval(() => {
         getTempAsync()
        
-      }, 30000)
+      }, 60000)
 
       setInterval(() => {
         getHumAsync()
-      }, 30000)
+      }, 60000)
     
 })
 

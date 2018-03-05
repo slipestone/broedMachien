@@ -5,6 +5,13 @@ const path = require('path')
 const app = express();
 const relais = require('./relais');
 const fan = require('./fan.js');
+const configEnvironment = 
+{
+    minTemp :  37.4,
+    maxTemp : 37.9,
+    minHum  : 52,
+    maxHum  : 54
+}
 
 const getCachedSensorReadings = require('./get-cached-sensor-readings');
 
@@ -28,10 +35,18 @@ app.get('/humidity', function (req, res) {
 
 app.get('/status', function (req, res) {
     res.json({
-        temperature: getCachedSensorReadings.getTemperature().toFixed(1),
-        humidity: getCachedSensorReadings.getHumidity().toFixed(1),
-        relais: relais.getStatus().toFixed(0),
-        fan: fan.getStatus().toFixed(0)
+        environment : {
+            temperature: getCachedSensorReadings.getTemperature().toFixed(1),
+            humidity: getCachedSensorReadings.getHumidity().toFixed(1),
+            relais: relais.getStatus().toFixed(0),
+            fan: fan.getStatus().toFixed(0)
+        },
+        configuration : {
+            minTemperature : configEnvironment.minTemp,
+            maxTemperature : configEnvironment.maxTemp,
+            minHumidity : configEnvironment.minHum,
+            maxHumidity : configEnvironment.maxHum
+        }
 
     })
 });
@@ -105,28 +120,28 @@ function controlEnvironment(){
     var temp = getCachedSensorReadings.getTemperature()
     var hum = getCachedSensorReadings.getHumidity()
     //CONTROL TEMP
-    if (temp != null && temp >= 37.9) {
-        console.log(" temp > 37.9 (bulb off) "+ temp )
+    if (temp != null && temp >= configEnvironment.maxTemp) {
+        console.log(" temp > "+ configEnvironment.maxTemp + " (bulb off) "+ temp )
         if (relais.getStatus() === 1) { //if relais is On
             relais.setStatus(0);           //then swithc it off
         }
     }
-    else if (temp != null && temp <= 37.4){
-        console.log(" temp < 37.4 (bulb on) "+ temp )
+    else if (temp != null && temp <= configEnvironment.minTemp){
+        console.log(" temp < "+ configEnvironment.minTemp +" (bulb on) "+ temp )
         if (relais.getStatus() === 0) { //if relais is Off
             relais.setStatus(1);           //then swithc it on
         }      
     }
     
     //CONTROL HUM
-    if (hum != null && hum >= 54) {
-        console.log(" hum > 54 (fan On) "+ hum )
+    if (hum != null && hum >= configEnvironment.maxHum) {
+        console.log(" hum > "+ configEnvironment.maxHum +" (fan On) "+ hum )
         if (fan.getStatus() === 0) { //if fan is On
             fan.setStatus(1);           //then swithc it off
         }
     }
-    else if (hum != null && hum <= 52){
-        console.log(" hum <52 (fan off) "+ hum )
+    else if (hum != null && hum <= configEnvironment.minHum){
+        console.log(" hum < "+ configEnvironment.minHum +" (fan off) "+ hum )
         if (fan.getStatus() === 1) { //if fan is On
             fan.setStatus(0);           //then switch it off
         } 
