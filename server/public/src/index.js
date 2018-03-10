@@ -53,8 +53,8 @@ const humidityChartConfig = {
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: 40,
-          suggestedMax: 70
+          suggestedMin: 45,
+          suggestedMax: 65
         }
       }]
     }
