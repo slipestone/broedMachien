@@ -13,6 +13,8 @@ const configEnvironment =
     maxHum  : 54
 }
 
+var forcedRelaisState = 2; //2= Auto, 1=On,0=Off
+var forcedFanState = 2; //2= Auto, 1=On,0=Off
 const getCachedSensorReadings = require('./get-cached-sensor-readings');
 
 relais.init(5); //init relais on port 5
@@ -45,7 +47,9 @@ app.get('/status', function (req, res) {
             minTemperature : configEnvironment.minTemp,
             maxTemperature : configEnvironment.maxTemp,
             minHumidity : configEnvironment.minHum,
-            maxHumidity : configEnvironment.maxHum
+            maxHumidity : configEnvironment.maxHum,
+            FanForcedStated : forcedFanState,
+            relaisForcedState: forcedRelaisState
         }
 
     })
@@ -60,18 +64,28 @@ app.get('/relais', function (req, res) {
 
 
 app.get('/relais/1', function (req, res) {
-    relais.setStatus(1); 
+    forcedRelaisState = 1;
+    relais.setStatus(1);     
     res.json({
         relais: relais.getStatus().toFixed(0)
     })
 });
 
 app.get('/relais/0', function (req, res) {
+    forcedRelaisState = 0;
     relais.setStatus(0); 
     res.json({
         relais: relais.getStatus().toFixed(0)
     })
-});
+})
+
+    app.get('/relais/2', function (req, res) {
+        forcedRelaisState = 2;        
+        res.json({
+            relais: relais.getStatus().toFixed(0)
+        })
+    })
+
 
 
 app.get('/fan', function (req, res) {        
@@ -83,19 +97,27 @@ app.get('/fan', function (req, res) {
 
 
 app.get('/fan/1', function (req, res) {
+    forcedFanState = 1;
     fan.setStatus(1); 
     res.json({
         fan: fan.getStatus().toFixed(0)
     })
 });
 
+
 app.get('/fan/0', function (req, res) {
+    forcedFanState = 0;
     fan.setStatus(0); 
     res.json({
         fan: relais.getStatus().toFixed(0)
     })
+})
 
-
+app.get('/fan/2', function (req, res) {
+    forcedFanState = 2;        
+    res.json({
+        fan: relais.getStatus().toFixed(0)
+    })    
 });
 
 
@@ -122,13 +144,13 @@ function controlEnvironment(){
     //CONTROL TEMP
     if (temp != null && temp >= configEnvironment.maxTemp) {
         console.log(" temp > "+ configEnvironment.maxTemp + " (bulb off) "+ temp )
-        if (relais.getStatus() === 1) { //if relais is On
+        if (forcedRelaisState === 2 && relais.getStatus() === 1 ) { //if relais is On
             relais.setStatus(0);           //then swithc it off
         }
     }
     else if (temp != null && temp <= configEnvironment.minTemp){
         console.log(" temp < "+ configEnvironment.minTemp +" (bulb on) "+ temp )
-        if (relais.getStatus() === 0) { //if relais is Off
+        if (forcedRelaisState === 2 && relais.getStatus() === 0) { //if relais is Off
             relais.setStatus(1);           //then swithc it on
         }      
     }
@@ -136,13 +158,13 @@ function controlEnvironment(){
     //CONTROL HUM
     if (hum != null && hum >= configEnvironment.maxHum) {
         console.log(" hum > "+ configEnvironment.maxHum +" (fan On) "+ hum )
-        if (fan.getStatus() === 0) { //if fan is On
+        if (forcedFanState === 2 && fan.getStatus() === 0) { //if fan is On
             fan.setStatus(1);           //then swithc it off
         }
     }
     else if (hum != null && hum <= configEnvironment.minHum){
         console.log(" hum < "+ configEnvironment.minHum +" (fan off) "+ hum )
-        if (fan.getStatus() === 1) { //if fan is On
+        if (forcedFanState === 2 && fan.getStatus() === 1) { //if fan is On
             fan.setStatus(0);           //then switch it off
         } 
     }       
