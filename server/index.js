@@ -5,13 +5,22 @@ const path = require('path')
 const app = express();
 const relais = require('./relais');
 const fan = require('./fan.js');
-const configEnvironment = 
+const configEnvironment_mode1 = 
 {
     minTemp :  37.4,
     maxTemp : 37.9,
     minHum  : 52,
     maxHum  : 54
 }
+
+const configEnvironment = 
+{
+    minTemp :  36.6,
+    maxTemp : 37.0,
+    minHum  : 63,
+    maxHum  : 67
+}
+
 
 var forcedRelaisState = 2; //2= Auto, 1=On,0=Off
 var forcedFanState = 2; //2= Auto, 1=On,0=Off
